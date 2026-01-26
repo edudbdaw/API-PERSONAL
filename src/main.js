@@ -35,7 +35,7 @@ async function getDatas(page) {
     pageNumer(page);
     try {
         //get api datas
-        const api = await fetch(`https://api.artic.edu/api/v1/artworks?page=${page}&limit=10`);
+        const api = await fetch(`https://api.artic.edu/api/v1/artworks?page=${page}&limit=25`);
         const apiString = await api.json();
         console.log(apiString);
 
@@ -60,6 +60,22 @@ async function getDatas(page) {
 
         printCards(apiResults);
 
+        //search by input
+        const input = document.querySelector('#input-search');
+        console.log(input);
+        input.addEventListener('input', function (e) {
+            e.preventDefault();
+            let target = e.target.value.toLowerCase();
+            let filterByText = apiResults.filter((individualData)=> {
+                const title = individualData.title.toLowerCase();
+                const artist = individualData.artist.toLowerCase();
+                return title.includes(target) || artist.includes(target);
+            })
+            printCards(filterByText);
+        })
+
+            
+
     } catch (error) {
         console.log(error);
     }
@@ -70,7 +86,7 @@ getDatas(page);
 
 //show img link
 function getImgLink(individualDataIMG) {
-    return `https://www.artic.edu/iiif/2/${individualDataIMG.imageId}/full/804,/0/default.jpg`;
+    return `https://www.artic.edu/iiif/2/${individualDataIMG.imageId}/full/400,/0/default.jpg`;
 }
 
 //Print cards
@@ -92,9 +108,9 @@ function printCards(apiResults) {
         artistP.textContent = `Artist: ${individualData.artist}`;
         date.textContent = individualData.date;
 
-        // ESTILOS (Tailwind básico para que no se vea feo)
-        card.classList.add('border', 'p-4', 'rounded', 'shadow-md', 'w-72' , 'mx-2', 'my-2','transition-all', 'duration-300' , 'hover:-translate-y-2' ,'hover:scale-105');
-        img.classList.add('w-full', 'h-48', 'object-cover', 'rounded'); // object-cover evita que se deforme
+        // Tailwind Styles
+        card.classList.add('border', 'p-4', 'rounded', 'shadow-md', 'w-72', 'mx-2', 'my-2', 'transition-all', 'duration-300', 'hover:-translate-y-2', 'hover:scale-105');
+        img.classList.add('w-full', 'h-48', 'object-cover', 'rounded'); // object-cover avoid deformation
         title.classList.add('font-bold', 'text-lg');
         artistP.classList.add('text-gray-600', 'text-sm');
         card.appendChild(title);
@@ -102,5 +118,10 @@ function printCards(apiResults) {
         card.append(img);
         card.appendChild(date);
         cardContainer.appendChild(card);
+
+
+
     });
 }
+
+
