@@ -99,7 +99,10 @@ getDatas(page);
 function getImgLink(individualDataIMG) {
     return `https://www.artic.edu/iiif/2/${individualDataIMG.imageId}/full/400,/0/default.jpg`;
 }
-
+//show img full link
+function getFullImgLink(individualDataIMG) {
+    return `https://www.artic.edu/iiif/2/${individualDataIMG.imageId}/full/800,/0/default.jpg`;
+}
 //Print cards
 function printCards(apiResults) {
     const cardContainer = document.querySelector('#cards-container');
@@ -131,7 +134,7 @@ function printCards(apiResults) {
         btnImg.classList.add('flex', 'justify-content-center', 'mx-auto', 'bg-black', 'text-white', 'px-1.5', 'py-1.5', 'mt-4', 'mb-1', 'rounded', 'font-semibold', 'transition-all', 'duration-200', 'hover:bg-gray-400');
         btnImg.addEventListener('click', function (e) {
             e.preventDefault();
-            window.open(getImgLink(individualData));
+            window.open(getFullImgLink(individualData));
         })
         card.appendChild(title);
         card.appendChild(artistP);
