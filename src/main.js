@@ -35,7 +35,7 @@ async function getDatas(page) {
     pageNumer(page);
     try {
         //get api datas
-        const api = await fetch(`https://api.artic.edu/api/v1/artworks?page=${page}&limit=2`);
+        const api = await fetch(`https://api.artic.edu/api/v1/artworks?page=${page}&limit=10`);
         const apiString = await api.json();
         console.log(apiString);
 
@@ -58,12 +58,7 @@ async function getDatas(page) {
             };
         });
 
-        console.log(apiResults);
-
-        //show img link
-        apiResults.forEach(individualData => {
-            console.log(`${urlIIIF}/${individualData.imageId}/full/400,/0/default.jpg`);
-        });
+        printCards(apiResults);
 
     } catch (error) {
         console.log(error);
@@ -72,3 +67,40 @@ async function getDatas(page) {
 
 //Default Charge
 getDatas(page);
+
+//show img link
+function getImgLink(individualDataIMG) {
+    return `https://www.artic.edu/iiif/2/${individualDataIMG.imageId}/full/804,/0/default.jpg`;
+}
+
+//Print cards
+function printCards(apiResults) {
+    const cardContainer = document.querySelector('#cards-container');
+    cardContainer.textContent = '';
+    apiResults.forEach((individualData) => {
+        // Create Elements
+        const card = document.createElement('div');
+        const title = document.createElement('h2');
+        const img = document.createElement('img');
+        const artistP = document.createElement('p');
+        const date = document.createElement('p');
+
+        // Fill Content
+        img.src = getImgLink(individualData);
+        img.alt = individualData.title;
+        title.textContent = individualData.title;
+        artistP.textContent = `Artist: ${individualData.artist}`;
+        date.textContent = individualData.date;
+
+        // ESTILOS (Tailwind básico para que no se vea feo)
+        card.classList.add('border', 'p-4', 'rounded', 'shadow-md', 'w-72' , 'mx-2', 'my-2','transition-all', 'duration-300' , 'hover:-translate-y-2' ,'hover:scale-105');
+        img.classList.add('w-full', 'h-48', 'object-cover', 'rounded'); // object-cover evita que se deforme
+        title.classList.add('font-bold', 'text-lg');
+        artistP.classList.add('text-gray-600', 'text-sm');
+        card.appendChild(title);
+        card.appendChild(artistP);
+        card.append(img);
+        card.appendChild(date);
+        cardContainer.appendChild(card);
+    });
+}
