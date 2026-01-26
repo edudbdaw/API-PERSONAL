@@ -7,11 +7,13 @@ const btnBefore = document.querySelector('#btn-before');
 const btnAfter = document.querySelector('#btn-after');
 const currentPage = document.querySelector('#current-page');
 
+// Page buttons
 btnBefore.addEventListener('click', function (e) {
     e.preventDefault();
     if (page > 1) {
         page--;
     }
+    scroolToTop();
     getDatas(page);
 
 })
@@ -19,14 +21,23 @@ btnBefore.addEventListener('click', function (e) {
 btnAfter.addEventListener('click', function (e) {
     e.preventDefault();
     page++;
+    scroolToTop();
     getDatas(page);
 })
 
 
+// get pageNumer and print in html
 function pageNumer(page) {
     currentPage.textContent = `${page}`
 }
 
+//scroll to top while clicking pany page button
+function scroolToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    })
+}
 // get datas
 async function getDatas(page) {
 
@@ -66,7 +77,7 @@ async function getDatas(page) {
         input.addEventListener('input', function (e) {
             e.preventDefault();
             let target = e.target.value.toLowerCase();
-            let filterByText = apiResults.filter((individualData)=> {
+            let filterByText = apiResults.filter((individualData) => {
                 const title = individualData.title.toLowerCase();
                 const artist = individualData.artist.toLowerCase();
                 return title.includes(target) || artist.includes(target);
@@ -74,7 +85,7 @@ async function getDatas(page) {
             printCards(filterByText);
         })
 
-            
+
 
     } catch (error) {
         console.log(error);
@@ -113,14 +124,21 @@ function printCards(apiResults) {
         img.classList.add('w-full', 'h-48', 'object-cover', 'rounded'); // object-cover avoid deformation
         title.classList.add('font-bold', 'text-lg');
         artistP.classList.add('text-gray-600', 'text-sm');
+
+        //button complete image
+        const btnImg = document.createElement('button');
+        btnImg.textContent = 'View Image';
+        btnImg.classList.add('flex', 'justify-content-center', 'mx-auto', 'bg-black', 'text-white', 'px-1.5', 'py-1.5', 'mt-4', 'mb-1', 'rounded', 'font-semibold', 'transition-all', 'duration-200', 'hover:bg-gray-400');
+        btnImg.addEventListener('click', function (e) {
+            e.preventDefault();
+            window.open(getImgLink(individualData));
+        })
         card.appendChild(title);
         card.appendChild(artistP);
         card.append(img);
         card.appendChild(date);
+        card.appendChild(btnImg)
         cardContainer.appendChild(card);
-
-
-
     });
 }
 
