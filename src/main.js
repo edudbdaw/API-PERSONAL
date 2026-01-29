@@ -114,29 +114,32 @@ function printCards(apiResults) {
         const img = document.createElement('img');
         const artistP = document.createElement('p');
         const date = document.createElement('p');
+        const fav = document.createElement('button');
 
         // Fill Content
         img.src = getImgLink(individualData);
         img.alt = individualData.title;
         title.textContent = individualData.title;
+        fav.textContent = 'FAV';
         artistP.textContent = `Artist: ${individualData.artist}`;
         date.textContent = individualData.date;
 
         // Tailwind Styles
-        card.classList.add('border', 'p-4', 'rounded', 'shadow-md', 'w-72', 'mx-2', 'my-2', 'transition-all', 'duration-300', 'hover:-translate-y-2', 'hover:scale-105');
+        card.classList.add('flex', 'flex-col', 'border', 'p-4', 'rounded', 'shadow-md', 'w-72', 'mx-2', 'my-2', 'transition-all', 'duration-300', 'hover:-translate-y-2', 'hover:scale-105');
         img.classList.add('w-full', 'h-48', 'object-cover', 'rounded'); // object-cover avoid deformation
-        title.classList.add('font-bold', 'text-lg');
+        title.classList.add('font-bold', 'text-lg' , 'text-center');
         artistP.classList.add('text-gray-600', 'text-sm');
-
+        date.classList.add('mb-3');
         //button complete image
         const btnImg = document.createElement('button');
         btnImg.textContent = 'View Image';
-        btnImg.classList.add('flex', 'justify-content-center', 'mx-auto', 'bg-black', 'text-white', 'px-1.5', 'py-1.5', 'mt-4', 'mb-1', 'rounded', 'font-semibold', 'transition-all', 'duration-200', 'hover:bg-gray-400');
+        btnImg.classList.add('flex', 'mx-auto', 'mt-auto', 'bg-black', 'text-white', 'px-1.5', 'py-1.5', 'mt-4', 'mb-1', 'rounded', 'font-semibold', 'transition-all', 'duration-200', 'hover:bg-gray-400');
         btnImg.addEventListener('click', function (e) {
             e.preventDefault();
             window.open(getFullImgLink(individualData));
         })
         card.appendChild(title);
+        card.appendChild(fav);
         card.appendChild(artistP);
         card.append(img);
         card.appendChild(date);
@@ -146,3 +149,10 @@ function printCards(apiResults) {
 }
 
 
+
+function showFav(individualData) {
+    const favourites = localStorage.getItem('fav');
+    const favoritosUsable = JSON.parse(favourites) || [];
+
+}
+showFav();
