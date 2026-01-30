@@ -115,12 +115,14 @@ function printCards(apiResults) {
         const artistP = document.createElement('p');
         const date = document.createElement('p');
         const fav = document.createElement('button');
-
+        const heartImg = document.createElement('img');
+        
         // Fill Content
         img.src = getImgLink(individualData);
         img.alt = individualData.title;
         title.textContent = individualData.title;
-        fav.textContent = 'FAV';
+        hearPath = './img/circulo.png'
+        heartImg.src = hearPath;
         artistP.textContent = `Artist: ${individualData.artist}`;
         date.textContent = individualData.date;
 
@@ -130,6 +132,7 @@ function printCards(apiResults) {
         title.classList.add('font-bold', 'text-lg' , 'text-center');
         artistP.classList.add('text-gray-600', 'text-sm');
         date.classList.add('mb-3');
+        heartImg.classList.add('h-8','flex', 'mx-auto', 'my-2' , 'transition-all', 'duration-300', 'hover:-translate-y-1', 'hover:scale-105')
         //button complete image
         const btnImg = document.createElement('button');
         btnImg.textContent = 'View Image';
@@ -138,8 +141,11 @@ function printCards(apiResults) {
             e.preventDefault();
             window.open(getFullImgLink(individualData));
         })
+
+        //Insert into containers
         card.appendChild(title);
         card.appendChild(fav);
+        fav.appendChild(heartImg);
         card.appendChild(artistP);
         card.append(img);
         card.appendChild(date);
@@ -149,7 +155,7 @@ function printCards(apiResults) {
 }
 
 
-
+//fav Logic
 function showFav(individualData) {
     const favourites = localStorage.getItem('fav');
     const favoritosUsable = JSON.parse(favourites) || [];
