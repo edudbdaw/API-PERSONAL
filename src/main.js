@@ -25,6 +25,10 @@ btnAfter.addEventListener('click', function (e) {
     getDatas(page);
 })
 
+//save page in SessionStorage
+function savePage() {
+    sessionStorage.setItem('page', page);
+}
 
 // get pageNumer and print in html
 function pageNumer(page) {
@@ -116,7 +120,7 @@ function printCards(apiResults) {
         const date = document.createElement('p');
         const fav = document.createElement('button');
         const heartImg = document.createElement('img');
-        
+
         // Fill Content
         img.src = getImgLink(individualData);
         img.alt = individualData.title;
@@ -129,10 +133,10 @@ function printCards(apiResults) {
         // Tailwind Styles
         card.classList.add('flex', 'flex-col', 'border', 'p-4', 'rounded', 'shadow-md', 'w-72', 'mx-2', 'my-2', 'transition-all', 'duration-300', 'hover:-translate-y-2', 'hover:scale-105');
         img.classList.add('w-full', 'h-48', 'object-cover', 'rounded'); // object-cover avoid deformation
-        title.classList.add('font-bold', 'text-lg' , 'text-center');
+        title.classList.add('font-bold', 'text-lg', 'text-center');
         artistP.classList.add('text-gray-600', 'text-sm');
         date.classList.add('mb-3');
-        heartImg.classList.add('h-8','flex', 'mx-auto', 'my-2' , 'transition-all', 'duration-300', 'hover:-translate-y-1', 'hover:scale-105')
+        heartImg.classList.add('h-8', 'flex', 'mx-auto', 'my-2', 'transition-all', 'duration-300', 'hover:-translate-y-1', 'hover:scale-105')
         //button complete image
         const btnImg = document.createElement('button');
         btnImg.textContent = 'View Image';
@@ -162,3 +166,40 @@ function showFav(individualData) {
 
 }
 showFav();
+
+
+//color funcition
+const camaleonColor = document.querySelector('#camaleon');
+
+camaleonColor.addEventListener('click', function (e) {
+    e.preventDefault();
+    const imgCamaleon = document.querySelector('#camaleonImg');
+    getTheme();
+    imgCamaleon.classList.add('grayscale-100');
+})
+
+function getTheme() {
+    const theme = localStorage.getItem('theme');
+    if (!theme) {
+        localStorage.setItem('theme', 'white');
+    } else {
+        if (theme == 'white') {
+            const imgCamaleon = document.querySelector('#camaleonImg');
+            imgCamaleon.classList.remove('grayscale-100');
+            localStorage.setItem('theme' , 'black');
+    console.log(imgCamaleon);
+
+            
+        } else {
+            const imgCamaleon = document.querySelector('#camaleonImg');
+            imgCamaleon.classList.add('grayscale-100');
+            localStorage.setItem('theme' , 'white');
+    console.log(imgCamaleon);
+
+
+        }
+    }
+    
+    console.log(theme);
+
+}
