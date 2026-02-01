@@ -87,6 +87,9 @@ async function getDatas(page) {
                 return title.includes(target) || artist.includes(target);
             })
             printCards(filterByText);
+            
+            //I call again style due to the theme is not applaying again 
+            getThemeFirst();
         })
 
 
@@ -94,11 +97,12 @@ async function getDatas(page) {
     } catch (error) {
         console.log(error);
     }
+    //Call for apply the style of the page 
+    getThemeFirst();
 }
 
 //Default Charge
 getDatas(page);
-
 //show img link
 function getImgLink(individualDataIMG) {
     return `https://www.artic.edu/iiif/2/${individualDataIMG.imageId}/full/400,/0/default.jpg`;
@@ -131,11 +135,11 @@ function printCards(apiResults) {
         date.textContent = individualData.date;
 
         // Tailwind Styles
-        card.classList.add('flex', 'flex-col', 'border', 'p-4', 'rounded', 'shadow-md', 'w-72', 'mx-2', 'my-2', 'transition-all', 'duration-300', 'hover:-translate-y-2', 'hover:scale-105');
+        card.classList.add('card', 'flex', 'flex-col', 'border', 'p-4', 'rounded', 'shadow-md', 'w-72', 'mx-2', 'my-2', 'transition-all', 'duration-300', 'hover:-translate-y-2', 'hover:scale-105');
         img.classList.add('w-full', 'h-48', 'object-cover', 'rounded'); // object-cover avoid deformation
-        title.classList.add('font-bold', 'text-lg', 'text-center');
-        artistP.classList.add('text-gray-600', 'text-sm');
-        date.classList.add('mb-3');
+        title.classList.add('titleCard', 'font-bold', 'text-lg', 'text-center');
+        artistP.classList.add('artistCard', 'text-gray-600', 'text-sm');
+        date.classList.add('dateCard', 'mb-3');
         heartImg.classList.add('h-8', 'flex', 'mx-auto', 'my-2', 'transition-all', 'duration-300', 'hover:-translate-y-1', 'hover:scale-105')
         //button complete image
         const btnImg = document.createElement('button');
@@ -173,33 +177,114 @@ const camaleonColor = document.querySelector('#camaleon');
 
 camaleonColor.addEventListener('click', function (e) {
     e.preventDefault();
-    const imgCamaleon = document.querySelector('#camaleonImg');
-    getTheme();
-    imgCamaleon.classList.add('grayscale-100');
+    setTheme();
+
 })
 
-function getTheme() {
+//get theme
+function getThemeFirst() {
     const theme = localStorage.getItem('theme');
+    const imgCamaleon = document.querySelector('#camaleonImg');
     if (!theme) {
         localStorage.setItem('theme', 'white');
+        console.log("No habia tema");
     } else {
         if (theme == 'white') {
-            const imgCamaleon = document.querySelector('#camaleonImg');
             imgCamaleon.classList.remove('grayscale-100');
-            localStorage.setItem('theme' , 'black');
-    console.log(imgCamaleon);
-
-            
+            removeBlackStyle();
         } else {
-            const imgCamaleon = document.querySelector('#camaleonImg');
             imgCamaleon.classList.add('grayscale-100');
-            localStorage.setItem('theme' , 'white');
-    console.log(imgCamaleon);
-
-
+            setBlackStyle();
         }
     }
-    
-    console.log(theme);
+}
 
+//set theme
+function setTheme() {
+
+    const theme = localStorage.getItem('theme');
+    const imgCamaleon = document.querySelector('#camaleonImg');
+    if (theme == 'white') {
+        //If white change to black , if black change to white
+        imgCamaleon.classList.add('grayscale-100');
+        localStorage.setItem('theme', 'black');
+        setBlackStyle();
+    } else {
+
+        imgCamaleon.classList.remove('grayscale-100');
+        localStorage.setItem('theme', 'white');
+        removeBlackStyle();
+
+    }
+}
+
+function setBlackStyle() {
+    document.body.classList.add('bg-black');
+    const pageName = document.querySelector('#pageName');
+    pageName.classList.add('text-white')
+    const inputSearch = document.querySelector('#input-search');
+    inputSearch.classList.add('text-white');
+    const currentPage = document.querySelector('#current-page');
+    currentPage.classList.add('text-white' , 'border-white');
+
+    const card = document.querySelectorAll('.card');
+    const title = document.querySelectorAll('.titleCard');
+    const artist = document.querySelectorAll('.artistCard');
+    const date = document.querySelectorAll('.dateCard');
+
+    card.forEach((card) => {
+        card.classList.remove('bg-white');
+        card.classList.add('bg-gray-900');
+    });
+
+    title.forEach((title) => {
+        title.classList.remove('text-black');
+        title.classList.add('text-white');
+    });
+
+    artist.forEach((artist) => {
+        artist.classList.remove('text-gray-600');
+        artist.classList.add('text-gray-300');
+    });
+
+    date.forEach((date) => {
+        date.classList.remove('text-black');
+        date.classList.add('text-white');
+    });
+}
+
+function removeBlackStyle() {
+
+    document.body.classList.remove('bg-black');
+    const pageName = document.querySelector('#pageName');
+    pageName.classList.remove('text-white');
+    const inputSearch = document.querySelector('#input-search');
+    inputSearch.classList.remove('text-white');
+    const currentPage = document.querySelector('#current-page');
+    currentPage.classList.remove('text-white', 'border-white');
+
+    const card = document.querySelectorAll('.card');
+    const title = document.querySelectorAll('.titleCard');
+    const artist = document.querySelectorAll('.artistCard');
+    const date = document.querySelectorAll('.dateCard');
+
+    card.forEach((card) => {
+        card.classList.remove('bg-gray-900');
+        card.classList.add('bg-white');
+    });
+
+    title.forEach((title) => {
+        title.classList.remove('text-white');
+        title.classList.add('text-black');
+    });
+
+    artist.forEach((artist) => {
+        artist.classList.remove('text-gray-300');
+        artist.classList.add('text-gray-600');
+    });
+
+    date.forEach((date) => {
+        date.classList.remove('text-white');
+        date.classList.add('text-black');
+    });
 }
