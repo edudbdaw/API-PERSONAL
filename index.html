@@ -10,12 +10,28 @@
 </head>
 
 <body>
-    <h1 id="pageName" class="text-3xl flex justify-center my-7 font-bold ">EDAPI : ART INSTITUTE OF CHICAGO </h1>
+    <h1 id="pageName"
+        class="text-4xl md:text-6xl font-serif font-black tracking-widest uppercase text-center my-10 drop-shadow-sm transition-colors duration-500">
+        EDAPI <span
+            class="block text-lg md:text-2xl font-light tracking-normal mt-2 normal-case font-sans opacity-80">Art
+            Institute of Chicago</span>
+    </h1>
     <div class="mx-2">
         <button id="camaleon"
             class="flex items-center justify-center fixed border-2 border-gray-200 bottom-8 z-1 right-8 w-16 h-16 bg-white rounded-full shadow-2xl hover:scale-110 hover:transition-transform hover:duration-200 ">
             <img id="camaleonImg" src="img/camaleon.png" alt="Cambiar color" class="w-10 gray">
         </button>
+        <audio id="museum-audio" loop>
+            <source src="/music/ambient-piano-gallery-no8-409091.mp3" type="audio/ogg">
+            Tu navegador no soporta audio.
+        </audio>
+
+        <div class="mx-2">
+            <button id="music-btn"
+                class="flex items-center justify-center fixed border-2 border-gray-200 bottom-28 z-1 right-8 w-16 h-16 bg-white rounded-full shadow-2xl hover:scale-110 hover:transition-transform hover:duration-200">
+                <span id="music-icon" class="text-2xl">🔇</span>
+            </button>
+        </div>
     </div>
     <div class="search flex flex-col items-center">
         <input class="border w-90 px-2 py-1.5" type="text" name="input-search" id="input-search"

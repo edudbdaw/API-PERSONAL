@@ -323,3 +323,25 @@ function removeBlackStyle() {
         date.classList.add('text-black');
     });
 }
+
+
+// Music
+const audio = document.getElementById('museum-audio');
+const musicBtn = document.getElementById('music-btn');
+const musicIcon = document.getElementById('music-icon');
+
+//initial config
+audio.volume = 0.08; 
+
+//music button event
+musicBtn.addEventListener('click', () => {
+    if (audio.paused) {
+        audio.play();
+        musicIcon.textContent = '🎵'; 
+        musicBtn.classList.add('animate-pulse');
+    } else {
+        audio.pause();
+        musicIcon.textContent = '🔇';
+        musicBtn.classList.remove('animate-pulse');
+    }
+});
