@@ -87,7 +87,7 @@ async function getDatas(page) {
                 return title.includes(target) || artist.includes(target);
             })
             printCards(filterByText);
-            
+
             //I call again style due to the theme is not applaying again 
             getThemeFirst();
         })
@@ -140,7 +140,10 @@ function printCards(apiResults) {
         title.classList.add('titleCard', 'font-bold', 'text-lg', 'text-center');
         artistP.classList.add('artistCard', 'text-gray-600', 'text-sm');
         date.classList.add('dateCard', 'mb-3');
-        heartImg.classList.add('h-8', 'flex', 'mx-auto', 'my-2', 'transition-all', 'duration-300', 'hover:-translate-y-1', 'hover:scale-105')
+
+        //call fav funcion for give color or not
+        heartFavStyle(individualData, heartImg);
+
         //button complete image
         const btnImg = document.createElement('button');
         btnImg.textContent = 'View Image';
@@ -149,6 +152,14 @@ function printCards(apiResults) {
             e.preventDefault();
             window.open(getFullImgLink(individualData));
         })
+
+        //fav event
+        fav.addEventListener('click', function (e) {
+            e.preventDefault();
+            addToFav(individualData);
+            heartFavStyle(individualData, heartImg);
+        });
+
 
         //Insert into containers
         card.appendChild(title);
@@ -163,13 +174,37 @@ function printCards(apiResults) {
 }
 
 
-//fav Logic
-function showFav(individualData) {
-    const favourites = localStorage.getItem('fav');
-    const favoritosUsable = JSON.parse(favourites) || [];
+//add to fav
 
+function addToFav(individualData) {
+    const favsArray = localStorage.getItem('favs');
+    const favArraysToJson = JSON.parse(favsArray) ?? [];
+    if (favArraysToJson.includes(individualData.id)) {
+        const indexArrayExisted = favArraysToJson.indexOf(individualData.id);
+        favArraysToJson.splice(indexArrayExisted , 1);
+    } else {
+        favArraysToJson.push(individualData.id);
+    }
+    
+    const favArraysToString = JSON.stringify(favArraysToJson);
+    localStorage.setItem('favs', favArraysToString);
+
+    //call getDatas from the api again for reload the favs due to , the cards get style by the function hearstyle 
+    //that is inside getDatas
+    getDatas(page);
 }
-showFav();
+
+//give colour or not depending if is fav or not
+function heartFavStyle(individualData, heartImg) {
+    const favs = localStorage.getItem('favs');
+    const favsToJson = JSON.parse(favs) ?? [];
+    heartImg.classList.add('h-8', 'flex', 'mx-auto', 'my-2', 'transition-all', 'duration-300', 'hover:-translate-y-1', 'hover:scale-105');
+    if (favsToJson.includes(individualData.id)) {
+        heartImg.classList.remove('grayscale-75');
+    } else {
+        heartImg.classList.add('grayscale-75');
+    }
+}
 
 
 //color funcition
@@ -225,7 +260,7 @@ function setBlackStyle() {
     const inputSearch = document.querySelector('#input-search');
     inputSearch.classList.add('text-white');
     const currentPage = document.querySelector('#current-page');
-    currentPage.classList.add('text-white' , 'border-white');
+    currentPage.classList.add('text-white', 'border-white');
 
     const card = document.querySelectorAll('.card');
     const title = document.querySelectorAll('.titleCard');
